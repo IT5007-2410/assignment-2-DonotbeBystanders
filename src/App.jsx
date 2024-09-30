@@ -45,15 +45,47 @@ function DisplayTravellers({ travellers }) {
   );
 }
 
-// Component to add a new traveller (logic to be added later)
-function AddTraveller() {
+// Question 4: Component to add a new traveller
+function AddTraveller({ travellers, setTravellers }) {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Create a new traveller object
+    const newTraveller = {
+      id: travellers.length + 1, // Incremental ID
+      name,
+      phone,
+    };
+
+    // Update the travellers state with the new traveller
+    setTravellers([...travellers, newTraveller]);
+
+    // Reset form fields
+    setName('');
+    setPhone('');
+  };
+
   return (
     <div>
       <h2>Add Traveller</h2>
-      <form>
-        {/* Form fields for adding a traveller */}
-        <input type="text" placeholder="Name" required />
-        <input type="text" placeholder="Phone" required />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+        />
         <button type="submit">Add Traveller</button>
       </form>
     </div>
@@ -78,7 +110,7 @@ function App() {
 
       {/* Question 2: Conditional Rendering based on current page */}
       {currentPage === 'displayTravellers' && <DisplayTravellers travellers={travellers} />}
-      {currentPage === 'addTraveller' && <AddTraveller />}
+      {currentPage === 'addTraveller' && <AddTraveller travellers={travellers} setTravellers={setTravellers} />}
       {currentPage === 'displayFreeSeats' && <DisplayFreeSeats travellers={travellers} />}
     </div>
   );
