@@ -18,23 +18,34 @@ function DisplayFreeSeats({ travellers }) {
   );
 }
 
-// Component to display list of travellers (Part of Question 2)
+// Question 3: Component to display list of travellers in a table format
 function DisplayTravellers({ travellers }) {
   return (
     <div>
       <h2>Travellers List</h2>
-      <ul>
-        {travellers.map((traveller) => (
-          <li key={traveller.id}>
-            {traveller.name} - {traveller.phone}
-          </li>
-        ))}
-      </ul>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          {travellers.map((traveller) => (
+            <tr key={traveller.id}>
+              <td>{traveller.id}</td>
+              <td>{traveller.name}</td>
+              <td>{traveller.phone}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-// Component to add a new traveller (will be expanded in future tasks)
+// Component to add a new traveller (logic to be added later)
 function AddTraveller() {
   return (
     <div>
@@ -75,38 +86,6 @@ function App() {
 
 export default App;
 
-
-
-function TravellerRow(props) {
-  {/*Q3. Placeholder to initialize local variable based on traveller prop.*/ }
-  return (
-    <tr>
-      {/*Q3. Placeholder for rendering one row of a table with required traveller attribute values.*/}
-    </tr>
-  );
-}
-
-function Display(props) {
-
-  /*Q3. Write code to render rows of table, reach corresponding to one traveller. Make use of the TravellerRow function that draws one row.*/
-
-  return (
-    <table className="bordered-table">
-      <thead>
-        <tr>
-          {/*Q3. Below table is just an example. Add more columns based on the traveller attributes you choose.*/}
-          <th>ID</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Booking Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/*Q3. write code to call the JS variable defined at the top of this function to render table rows.*/}
-      </tbody>
-    </table>
-  );
-}
 
 class Add extends React.Component {
   constructor() {
