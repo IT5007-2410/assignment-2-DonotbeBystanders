@@ -92,6 +92,42 @@ function AddTraveller({ travellers, setTravellers }) {
   );
 }
 
+// Question 5: Component to delete a traveller
+function DeleteTraveller({ travellers, setTravellers }) {
+  const [name, setName] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Filter out the traveller by name
+    const updatedTravellers = travellers.filter(
+      (traveller) => traveller.name.toLowerCase() !== name.toLowerCase()
+    );
+
+    // Update the travellers state with the remaining travellers
+    setTravellers(updatedTravellers);
+
+    // Reset form field
+    setName('');
+  };
+
+  return (
+    <div>
+      <h2>Delete Traveller</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Traveller Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <button type="submit">Delete Traveller</button>
+      </form>
+    </div>
+  );
+}
+
 function App() {
   // Question 1: Store travellers in a state variable
   const [travellers, setTravellers] = useState(initialTravellers);
@@ -105,19 +141,20 @@ function App() {
       <nav>
         <button onClick={() => setCurrentPage('displayTravellers')}>Display Travellers</button>
         <button onClick={() => setCurrentPage('addTraveller')}>Add Traveller</button>
+        <button onClick={() => setCurrentPage('deleteTraveller')}>Delete Traveller</button>
         <button onClick={() => setCurrentPage('displayFreeSeats')}>Display Free Seats</button>
       </nav>
 
       {/* Question 2: Conditional Rendering based on current page */}
       {currentPage === 'displayTravellers' && <DisplayTravellers travellers={travellers} />}
       {currentPage === 'addTraveller' && <AddTraveller travellers={travellers} setTravellers={setTravellers} />}
+      {currentPage === 'deleteTraveller' && <DeleteTraveller travellers={travellers} setTravellers={setTravellers} />}
       {currentPage === 'displayFreeSeats' && <DisplayFreeSeats travellers={travellers} />}
     </div>
   );
 }
 
 export default App;
-
 
 class Add extends React.Component {
   constructor() {
