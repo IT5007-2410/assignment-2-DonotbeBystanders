@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css'; // Optional for CSS styling
 
 // Question 1: Initial traveller data stored in a React state variable
 const initialTravellers = [
@@ -128,6 +129,30 @@ function DeleteTraveller({ travellers, setTravellers }) {
   );
 }
 
+// Question 6: Component to display visual representation of seats
+function VisualSeats({ travellers }) {
+  const totalSeats = 10;
+  const seats = Array.from({ length: totalSeats });
+
+  return (
+    <div>
+      <h2>Seat Layout</h2>
+      <div className="seat-layout">
+        {seats.map((_, index) => (
+          <button
+            key={index}
+            className={
+              index < travellers.length ? 'seat occupied' : 'seat free'
+            }
+          >
+            {index < travellers.length ? 'Occupied' : 'Free'}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function App() {
   // Question 1: Store travellers in a state variable
   const [travellers, setTravellers] = useState(initialTravellers);
@@ -143,6 +168,7 @@ function App() {
         <button onClick={() => setCurrentPage('addTraveller')}>Add Traveller</button>
         <button onClick={() => setCurrentPage('deleteTraveller')}>Delete Traveller</button>
         <button onClick={() => setCurrentPage('displayFreeSeats')}>Display Free Seats</button>
+        <button onClick={() => setCurrentPage('visualSeats')}>Visual Seats</button>
       </nav>
 
       {/* Question 2: Conditional Rendering based on current page */}
@@ -150,115 +176,9 @@ function App() {
       {currentPage === 'addTraveller' && <AddTraveller travellers={travellers} setTravellers={setTravellers} />}
       {currentPage === 'deleteTraveller' && <DeleteTraveller travellers={travellers} setTravellers={setTravellers} />}
       {currentPage === 'displayFreeSeats' && <DisplayFreeSeats travellers={travellers} />}
+      {currentPage === 'visualSeats' && <VisualSeats travellers={travellers} />}
     </div>
   );
 }
 
 export default App;
-
-class Add extends React.Component {
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
-  }
-
-  render() {
-    return (
-      <form name="addTraveller" onSubmit={this.handleSubmit}>
-        {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
-        <input type="text" name="travellername" placeholder="Name" />
-        <button>Add</button>
-      </form>
-    );
-  }
-}
-
-
-class Delete extends React.Component {
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleSubmit(e) {
-    e.preventDefault();
-    /*Q5. Fetch the passenger details from the deletion form and call deleteTraveller()*/
-  }
-
-  render() {
-    return (
-      <form name="deleteTraveller" onSubmit={this.handleSubmit}>
-        {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}
-        <input type="text" name="travellername" placeholder="Name" />
-        <button>Delete</button>
-      </form>
-    );
-  }
-}
-
-class Homepage extends React.Component {
-  constructor() {
-    super();
-  }
-  render() {
-    return (
-      <div>
-        {/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
-      </div>);
-  }
-}
-class TicketToRide extends React.Component {
-  constructor() {
-    super();
-    this.state = { travellers: [], selector: 1 };
-    this.bookTraveller = this.bookTraveller.bind(this);
-    this.deleteTraveller = this.deleteTraveller.bind(this);
-  }
-
-  setSelector(value) {
-    /*Q2. Function to set the value of component selector variable based on user's button click.*/
-  }
-  componentDidMount() {
-    this.loadData();
-  }
-
-  loadData() {
-    setTimeout(() => {
-      this.setState({ travellers: initialTravellers });
-    }, 500);
-  }
-
-  bookTraveller(passenger) {
-    /*Q4. Write code to add a passenger to the traveller state variable.*/
-  }
-
-  deleteTraveller(passenger) {
-    /*Q5. Write code to delete a passenger from the traveller state variable.*/
-  }
-  render() {
-    return (
-      <div>
-        <h1>Ticket To Ride</h1>
-        <div>
-          {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
-        </div>
-        <div>
-          {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
-          {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-          {/*Q3. Code to call component that Displays Travellers.*/}
-
-          {/*Q4. Code to call the component that adds a traveller.*/}
-          {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
-        </div>
-      </div>
-    );
-  }
-}
-
-const element = <TicketToRide />;
-
-ReactDOM.render(element, document.getElementById('contents'));
