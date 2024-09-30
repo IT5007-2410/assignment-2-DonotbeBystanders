@@ -1,34 +1,80 @@
 import React, { useState } from 'react';
 
-/*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
+// Question 1: Initial traveller data stored in a React state variable
 const initialTravellers = [
-  {
-    id: 1,
-    name: 'Jack',
-    phone: 88885555,
-    bookingTime: new Date(),
-  },
-  {
-    id: 2,
-    name: 'Rose',
-    phone: 88884444,
-    bookingTime: new Date(),
-  },
+  { id: 1, name: 'Jack', phone: 88885555 },
+  { id: 2, name: 'Rose', phone: 88884444 },
 ];
 
-function App() {
-  // Q1: Initialize travellers state
-  const [travellers, setTravellers] = useState(initialTravellers);
+// Component to display total free seats (Part of Question 2)
+function DisplayFreeSeats({ travellers }) {
+  const totalSeats = 10;
+  const freeSeats = totalSeats - travellers.length;
 
   return (
     <div>
-      {/* Other components will go here */}
-      {/* You will pass the 'travellers' state to other components as needed */}
+      <h2>Free Seats: {freeSeats}</h2>
+    </div>
+  );
+}
+
+// Component to display list of travellers (Part of Question 2)
+function DisplayTravellers({ travellers }) {
+  return (
+    <div>
+      <h2>Travellers List</h2>
+      <ul>
+        {travellers.map((traveller) => (
+          <li key={traveller.id}>
+            {traveller.name} - {traveller.phone}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Component to add a new traveller (will be expanded in future tasks)
+function AddTraveller() {
+  return (
+    <div>
+      <h2>Add Traveller</h2>
+      <form>
+        {/* Form fields for adding a traveller */}
+        <input type="text" placeholder="Name" required />
+        <input type="text" placeholder="Phone" required />
+        <button type="submit">Add Traveller</button>
+      </form>
+    </div>
+  );
+}
+
+function App() {
+  // Question 1: Store travellers in a state variable
+  const [travellers, setTravellers] = useState(initialTravellers);
+
+  // Question 2: State variable to track the current page being displayed
+  const [currentPage, setCurrentPage] = useState('displayTravellers');
+
+  return (
+    <div>
+      {/* Question 2: Navigation Bar */}
+      <nav>
+        <button onClick={() => setCurrentPage('displayTravellers')}>Display Travellers</button>
+        <button onClick={() => setCurrentPage('addTraveller')}>Add Traveller</button>
+        <button onClick={() => setCurrentPage('displayFreeSeats')}>Display Free Seats</button>
+      </nav>
+
+      {/* Question 2: Conditional Rendering based on current page */}
+      {currentPage === 'displayTravellers' && <DisplayTravellers travellers={travellers} />}
+      {currentPage === 'addTraveller' && <AddTraveller />}
+      {currentPage === 'displayFreeSeats' && <DisplayFreeSeats travellers={travellers} />}
     </div>
   );
 }
 
 export default App;
+
 
 
 function TravellerRow(props) {
