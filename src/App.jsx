@@ -53,7 +53,9 @@ function AddTraveller({ travellers, setTravellers }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if (travellers.length == 10) {
+      return alert("The passenger information is full and cannot be added.")
+    }
     // Create a new traveller object
     const newTraveller = {
       id: travellers.length + 1, // Incremental ID
@@ -97,13 +99,30 @@ function AddTraveller({ travellers, setTravellers }) {
 function DeleteTraveller({ travellers, setTravellers }) {
   const [name, setName] = useState('');
 
+  const findByName = (name, data) => {
+    // 遍历数组对象
+    for (let i = 0; i < data.length; i++) {
+      // 检查当前对象的 name 属性是否匹配
+      if (data[i].name.toLowerCase() === name.toLowerCase()) {
+        return true; // 找到匹配的对象，返回 true
+      }
+    }
+    // 如果没有找到匹配的对象，返回 false
+    return false;
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if (!findByName(name,travellers)) {
+      return alert("Passenger information not found")
+    }
     // Filter out the traveller by name
     const updatedTravellers = travellers.filter(
       (traveller) => traveller.name.toLowerCase() !== name.toLowerCase()
     );
+
+    console.log(updatedTravellers, "1")
 
     // Update the travellers state with the remaining travellers
     setTravellers(updatedTravellers);
@@ -164,11 +183,11 @@ function App() {
     <div>
       {/* Question 2: Navigation Bar */}
       <nav>
-        <button onClick={() => setCurrentPage('displayTravellers')}>Display Travellers</button>
-        <button onClick={() => setCurrentPage('addTraveller')}>Add Traveller</button>
-        <button onClick={() => setCurrentPage('deleteTraveller')}>Delete Traveller</button>
-        <button onClick={() => setCurrentPage('displayFreeSeats')}>Display Free Seats</button>
-        <button onClick={() => setCurrentPage('visualSeats')}>Visual Seats</button>
+        <button className={currentPage == 'displayTravellers' && 'active'} onClick={() => setCurrentPage('displayTravellers')}>Display Travellers</button>
+        <button className={currentPage == 'addTraveller' && 'active'} onClick={() => setCurrentPage('addTraveller')}>Add Traveller</button>
+        <button className={currentPage == 'deleteTraveller' && 'active'} onClick={() => setCurrentPage('deleteTraveller')}>Delete Traveller</button>
+        <button className={currentPage == 'displayFreeSeats' && 'active'} onClick={() => setCurrentPage('displayFreeSeats')}>Display Free Seats</button>
+        <button className={currentPage == 'visualSeats' && 'active'} onClick={() => setCurrentPage('visualSeats')}>Visual Seats</button>
       </nav>
 
       {/* Question 2: Conditional Rendering based on current page */}
