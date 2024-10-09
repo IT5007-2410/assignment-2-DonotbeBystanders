@@ -3,8 +3,8 @@ import './App.css'; // Optional for CSS styling
 
 // Question 1: Initial traveller data stored in a React state variable
 const initialTravellers = [
-  { id: 1, name: 'Jack', phone: 88885555 },
-  { id: 2, name: 'Rose', phone: 88884444 },
+  { id: 1, name: 'Jack', phone: 88885555,time:new Date('2024-08-08 11:00:00').getTime() },
+  { id: 2, name: 'Rose', phone: 88884444,time:new Date('2024-08-10 10:00:00').getTime() },
 ];
 
 // Component to display total free seats (Part of Question 2)
@@ -18,7 +18,16 @@ function DisplayFreeSeats({ travellers }) {
     </div>
   );
 }
-
+function timestampToDateTime(timestamp) {
+  var date = new Date(timestamp); // 转换为Date对象
+  var year = date.getFullYear(); // 获取年份
+  var month = ("0" + (date.getMonth() + 1)).slice(-2); // 获取月份，转为两位数
+  var day = ("0" + date.getDate()).slice(-2); // 获取日，转为两位数
+  var hours = ("0" + date.getHours()).slice(-2); // 获取小时，转为两位数
+  var minutes = ("0" + date.getMinutes()).slice(-2); // 获取分钟，转为两位数
+  var seconds = ("0" + date.getSeconds()).slice(-2); // 获取秒，转为两位数
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // 拼接字符串返回
+}
 // Question 3: Component to display list of travellers in a table format
 function DisplayTravellers({ travellers }) {
   return (
@@ -30,6 +39,7 @@ function DisplayTravellers({ travellers }) {
             <th>ID</th>
             <th>Name</th>
             <th>Phone</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +48,7 @@ function DisplayTravellers({ travellers }) {
               <td>{traveller.id}</td>
               <td>{traveller.name}</td>
               <td>{traveller.phone}</td>
+              <td>{timestampToDateTime(traveller.time)}</td>
             </tr>
           ))}
         </tbody>
@@ -53,14 +64,13 @@ function AddTraveller({ travellers, setTravellers }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (travellers.length == 10) {
-      return alert("The passenger information is full and cannot be added.")
-    }
+
     // Create a new traveller object
     const newTraveller = {
       id: travellers.length + 1, // Incremental ID
       name,
       phone,
+      time:new Date().getTime()
     };
 
     // Update the travellers state with the new traveller
@@ -99,30 +109,13 @@ function AddTraveller({ travellers, setTravellers }) {
 function DeleteTraveller({ travellers, setTravellers }) {
   const [name, setName] = useState('');
 
-  const findByName = (name, data) => {
-    // 遍历数组对象
-    for (let i = 0; i < data.length; i++) {
-      // 检查当前对象的 name 属性是否匹配
-      if (data[i].name.toLowerCase() === name.toLowerCase()) {
-        return true; // 找到匹配的对象，返回 true
-      }
-    }
-    // 如果没有找到匹配的对象，返回 false
-    return false;
-  }
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!findByName(name,travellers)) {
-      return alert("Passenger information not found")
-    }
+
     // Filter out the traveller by name
     const updatedTravellers = travellers.filter(
       (traveller) => traveller.name.toLowerCase() !== name.toLowerCase()
     );
-
-    console.log(updatedTravellers, "1")
 
     // Update the travellers state with the remaining travellers
     setTravellers(updatedTravellers);
@@ -183,11 +176,11 @@ function App() {
     <div>
       {/* Question 2: Navigation Bar */}
       <nav>
-        <button className={currentPage == 'displayTravellers' && 'active'} onClick={() => setCurrentPage('displayTravellers')}>Display Travellers</button>
-        <button className={currentPage == 'addTraveller' && 'active'} onClick={() => setCurrentPage('addTraveller')}>Add Traveller</button>
-        <button className={currentPage == 'deleteTraveller' && 'active'} onClick={() => setCurrentPage('deleteTraveller')}>Delete Traveller</button>
-        <button className={currentPage == 'displayFreeSeats' && 'active'} onClick={() => setCurrentPage('displayFreeSeats')}>Display Free Seats</button>
-        <button className={currentPage == 'visualSeats' && 'active'} onClick={() => setCurrentPage('visualSeats')}>Visual Seats</button>
+        <button className={currentPage=='displayTravellers' && 'active'} onClick={() => setCurrentPage('displayTravellers')}>Display Travellers</button>
+        <button className={currentPage=='addTraveller' && 'active'} onClick={() => setCurrentPage('addTraveller')}>Add Traveller</button>
+        <button className={currentPage=='deleteTraveller' && 'active'} onClick={() => setCurrentPage('deleteTraveller')}>Delete Traveller</button>
+        <button className={currentPage=='displayFreeSeats' && 'active'} onClick={() => setCurrentPage('displayFreeSeats')}>Display Free Seats</button>
+        <button className={currentPage=='visualSeats' && 'active'} onClick={() => setCurrentPage('visualSeats')}>Visual Seats</button>
       </nav>
 
       {/* Question 2: Conditional Rendering based on current page */}
